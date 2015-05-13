@@ -16,7 +16,6 @@ class Moltin:
 
         if refresh_token is not None:
             self.auth_result = self.authenticator.with_refresh(refresh_token)
-
         elif username is not None or password is not None:
             # Make sure we have both user and pass
             if username is None or password is None:
