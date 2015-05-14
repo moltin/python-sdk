@@ -1,7 +1,9 @@
 # Python SDK
 
 [Website] (http://molt.in)
+
 License: MIT
+
 Version: 1
 
 ## Description
@@ -10,39 +12,47 @@ Python SDK for the Moltin eCommerce API
 
 ## Installation
 
-    pip install moltin
+    $ pip install moltin
 
 ## Usage
 
 Initialise the Moltin object with your `client_id` and `client_secret`, and optionally a specific API version (e.g. `v1`).
-    
+
+```python
     from moltin.moltin import *
     
     m = Moltin("YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET"[, version="v1"])
-    
+```    
 
 ### Authentication
 
 To Authenticate, call the authenticate method.
 
+```python
     m.authenticate()
+```
     
 If authenticating with a username/password:
 
+```python
     m.authenticate(username="your_username", password="your_password")
     
     refresh_token = m.refresh_token  # used for re-authenticating without user/pass
-    
+```
+
 If authenticating with a refresh_token:
 
+```python
     m.authenticate(refresh_token="token")
-    
+```
+
 ### Making API Calls
 
 The SDK covers abstracts away most of the API endpoints.
 
 Example:
 
+```python
     products = Product(m)  #  pass in the authenticated Moltin object
     
     params = {
@@ -59,5 +69,5 @@ Example:
     }
     
     products.create(params)
-
+```
 
