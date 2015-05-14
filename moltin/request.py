@@ -28,10 +28,10 @@ class Request:
         if 'error' in response:
             raise RequestError(response['error'])
         else:
-            return r
+            return response
 
     def auth(self, auth_uri, payload):
-        return self.post(self.base + auth_uri, payload, omit_version=True)
+        return self.post(auth_uri, payload, omit_version=True)
 
     def put(self, url):
         pass
