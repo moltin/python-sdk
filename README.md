@@ -48,9 +48,9 @@ If authenticating with a refresh_token:
 
 ### Making API Calls
 
-The SDK covers abstracts away most of the API endpoints.
+The SDK offers a way to easily interact with most of the API endpoints.
 
-Example:
+Creating a product example:
 
 ```python
     products = Product(m)  #  pass in the authenticated Moltin object
@@ -70,4 +70,6 @@ Example:
     
     products.create(params)
 ```
+
+For more examples, see the full API docs.
 
