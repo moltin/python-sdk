@@ -1,6 +1,3 @@
-from request import Request
-
-
 class Authenticator:
 
     uri = "oauth/access_token"
@@ -34,4 +31,3 @@ class Authenticator:
         self.payload["refresh_token"] = refresh_token
 
         return self.auth()
-

@@ -21,8 +21,10 @@ from request import Request
 # By default, authentication will be done using the client_id and secret
 # To change authentication type:
 # For user/pass authentication, pass in username & password as kwargs
-# For refresh token authentication, pass in a refresh_token kwarg
+# For refresh token authentication, pass the refresh_token in as the refresh_token kwarg
 #
+# Once you authenticate using user/pass, the refresh token is available
+# from Moltin.refresh_token
 
 class Moltin:
 
@@ -34,18 +36,20 @@ class Moltin:
         self.access_token = None
         self.refresh_token = None
 
-    #
     def authenticate(self, refresh_token=None, username=None, password=None):
-
         if refresh_token is not None:
             self.auth_result = self.authenticator.with_refresh(refresh_token)
+
         elif username is not None or password is not None:
             # Make sure we have both user and pass
             if username is None or password is None:
-                raise FieldTypeError("Both username and password is required for password authentication")
+                raise FieldTypeError(
+                    "Both username and password is required for user/pass authentication"
+                )
 
             self.auth_result = self.authenticator.with_password(username, password)
             self.refresh_token = self.auth_result["refresh_token"]
+
         else:
             self.auth_result = self.authenticator.with_client_credentials()
 
