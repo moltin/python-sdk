@@ -14,14 +14,24 @@ class Authenticator:
             "client_secret": self.client_secret
         }
 
+    def auth(self):
+        return self.request.auth(self.uri, self.payload)
+
     def with_client_credentials(self):
         self.payload["grant_type"] = "client_credentials"
 
-        return self.request.auth(self.uri, self.payload)
+        return self.auth()
 
     def with_password(self, username, password):
-        pass
+        self.payload["grant_type"] = "password"
+        self.payload["username"] = username
+        self.payload["password"] = password
+
+        return self.auth()
 
     def with_refresh(self, refresh_token):
-        pass
+        self.payload["grant_type"] = "refresh_token"
+        self.payload["refresh_token"] = refresh_token
+
+        return self.auth()
 
