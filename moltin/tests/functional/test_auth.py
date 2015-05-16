@@ -2,15 +2,13 @@ import moltin
 from moltin.moltin import Moltin
 from sure import expect
 from moltin.exception import *
-from moltin.tests.credentials import *
 import mock
 
-m = Moltin(CLIENT_ID, CLIENT_SECRET)
+m = Moltin("", "")
 
 
 def create_mock_response(hash_to_return=None):
-    if hash_to_return is None:
-         hash_to_return = {"access_token": "somestring"}
+    hash_to_return = hash_to_return or {"access_token": "somestring"}
 
     mock_response = mock.Mock(moltin.requests.Response)
     mock_response.json.return_value = hash_to_return
@@ -53,7 +51,7 @@ def test_user_and_pass_incorrect(mock_post):
 @mock.patch("moltin.requests.post")
 def test_user_and_pass_correct(mock_post):
     mock_post.return_value = create_mock_response({"access_token": "somestring", "refresh_token": "someotherstring"})
-    m.authenticate(username=USERNAME, password=PASSWORD)
+    m.authenticate(username="correct_username", password="correct_password")
     expect(len(m.refresh_token) > 0).to.eql(True)
 
 
