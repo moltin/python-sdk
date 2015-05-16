@@ -33,7 +33,7 @@ class Request:
     def auth(self, auth_uri, payload):
         return self.post(auth_uri, payload, omit_version=True)
 
-    def put(self, url):
+    def put(self, url, payload):
         pass
 
     def delete(self, url):

@@ -56,3 +56,20 @@ class Moltin:
         self.access_token = self.auth_result['access_token']
         return self.access_token
 
+    #
+    #  Easy way of interacting with arbitrary API endpoints
+    #
+
+    def post(self, uri, payload):
+        return self.request.post(uri, payload)
+
+    def get(self, uri):
+        return self.request.get(uri)
+
+    def put(self, uri, payload):
+        return self.request.put(uri, payload)
+
+    def delete(self, uri):
+        return self.request.delete(uri)
+
+    # 
