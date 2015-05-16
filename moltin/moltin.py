@@ -72,4 +72,4 @@ class Moltin:
     def delete(self, uri):
         return self.request.delete(uri)
 
-    # 
+    #

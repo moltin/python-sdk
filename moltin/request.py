@@ -18,9 +18,9 @@ class Request:
     def post(self, trailing_uri, payload, omit_version=False):
 
         if omit_version:
-            request_url = self.base + trailing_uri
+            request_url = self.make_auth_url(trailing_uri)
         else:
-            request_url = self.base + self.version + trailing_uri
+            request_url = self.make_url(trailing_uri)
 
         r = requests.post(request_url, data=payload)
         response = r.json()
@@ -38,3 +38,9 @@ class Request:
 
     def delete(self, url):
         pass
+
+    def make_auth_url(self, trailing_uri):
+        return self.base + trailing_uri
+
+    def make_url(self, trailing_uri):
+        return self.base + self.version + trailing_uri
