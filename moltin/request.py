@@ -16,10 +16,13 @@ class Request:
 
     def set_access_token(self, token):
         self.access_token = token
-        self.set_auth_header()
+        self.set_auth_header(token)
+
+    def set_auth_header(self, token):
+        self.headers["Authorization"] = "Bearer " + token.token
 
     def get(self, url):
-        return self.with_error_handling(requests.get(self.make_url(url), headers=self.headers))
+        return self.with_error_handling(requests.get, self.make_url(url), headers=self.headers)
 
     def post(self, trailing_uri, payload, auth=False):
         if auth:
@@ -29,15 +32,16 @@ class Request:
             headers = self.headers
             request_url = self.make_url(trailing_uri)
 
-        return self.with_error_handling(requests.post(request_url, data=payload, headers=headers))
+        return self.with_error_handling(requests.post, request_url, data=payload, headers=headers)
 
-    def with_error_handling(self, response):
+    def with_error_handling(self, callback, *args, **kwargs):
+        response = callback(args, kwargs)
+        print response
         r = response.json()
         if 'error' in r:
             raise RequestError(r['error'])
 
         return r
-
 
     def auth(self, auth_uri, payload):
         return self.post(auth_uri, payload, auth=True)
@@ -53,6 +57,3 @@ class Request:
 
     def make_url(self, trailing_uri):
         return self.base + self.version + trailing_uri
-
-    def set_auth_header(self):
-         self.headers["Authorization"] = "Bearer " + self.access_token.token
