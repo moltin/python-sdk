@@ -11,4 +11,4 @@ def test_nonexistant_endpoint():
 
 def test_endpoint():
     checkout = m.Checkout
-    expect(type(checkout) is BaseEndpoint).to.eql(True)
+    expect(isinstance(checkout, BaseEndpoint)).to.eql(True)
