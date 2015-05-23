@@ -1,7 +1,8 @@
-from moltin.request import Request
+class BaseEndpoint():
 
-
-class BaseEndpoint(Request):
+    def __init__(self, request, endpoint):
+        self.request = request
+        self.endpoint = endpoint
 
     def list(self):
         pass
@@ -15,6 +16,6 @@ class BaseEndpoint(Request):
     def update(self):
         pass
 
-    def delete(self):
+    def remove(self):
         pass
 

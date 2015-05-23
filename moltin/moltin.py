@@ -1,6 +1,8 @@
 from authenticator import Authenticator
 from request import Request
 from token import TokenContainer
+from endpoints import BaseEndpoint
+import types
 
 # The Moltin Python SDK
 #
@@ -28,10 +30,39 @@ from token import TokenContainer
 
 class Moltin:
 
+    endpoints = [
+        "Address",
+        "Brand",
+        "Cart",
+        "Category",
+        "Checkout",
+        "Collection",
+        "Currency",
+        "Customer",
+        "CustomerGroup",
+        "Email",
+        "Entry",
+        "Field",
+        "File",
+        "Flow",
+        "Gateway",
+        "Language",
+        "Modifier",
+        "Moltin"
+    ]
+
     # Initialise with your client id and secret.
     def __init__(self, client_id, client_secret, version="v1"):
         self.request = Request(version)
         self.authenticator = Authenticator(client_id, client_secret, self.request, TokenContainer())
+
+    def __getattr__(self, name):
+        obj_name = name.capitalize()
+        if obj_name in self.endpoints:
+            endpoint_obj = self.create_endpoint_object(obj_name)
+            return endpoint_obj(self.request, name)
+        else:
+            raise RuntimeError("No such API endpoint: " + name)
 
     def set_api_version(self, version):
         self.request.set_version(version)
@@ -57,4 +88,5 @@ class Moltin:
     def delete(self, uri):
         return self.request.delete(uri)
 
-    #
+    def create_endpoint_object(self, name):
+        return type(name, (BaseEndpoint,object), {})

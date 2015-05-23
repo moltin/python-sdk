@@ -31,6 +31,7 @@ def test_request_with_invalid_code(mock_get):
     set_access_token("somestring", time() + 3600)
     r.get.when.called_with('products/').should.throw(RequestError)
 
+
 @mock.patch("moltin.requests.get")
 def test_request_with_invalid_code(mock_get):
     mock_get.return_value = create_mock_response({"products": []})
