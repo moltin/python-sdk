@@ -47,6 +47,6 @@ def test_user_and_pass_incorrect(mock_post):
 
 @mock.patch("moltin.requests.post")
 def test_user_and_pass_correct(mock_post):
-    mock_post.return_value = mock_auth_response({"access_token": "somestring", "refresh_token": "someotherstring"})
+    mock_post.return_value = mock_auth_response({"access_token": "somestring", "token_type": "Bearer", "refresh_token": "someotherstring"})
     m.authenticate(username="correct_username", password="correct_password")
     expect(len(m.tokens.get("refresh").token) > 0).to.eql(True)

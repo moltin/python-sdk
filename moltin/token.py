@@ -18,8 +18,9 @@ class TokenContainer:
 
 
 class Token:
-    def __init__(self, token):
+    def __init__(self, token, type):
         self.token = token
+        self.type = type
 
     def has_expired(self):
         return False
@@ -30,8 +31,8 @@ class RefreshToken(Token):
 
 
 class AccessToken(Token):
-    def __init__(self, token, expires, expires_in):
-        Token.__init__(self, token)
+    def __init__(self, token, type, expires, expires_in):
+        Token.__init__(self, token, type)
         self.expires = expires
         self.expires_in = expires_in
 
@@ -48,9 +49,9 @@ class TokenMaker:
         token_key = token_type.lower() + "_token"
 
         if token_type == "refresh":
-            token = RefreshToken(response[token_key])
+            token = RefreshToken(response[token_key], response["token_type"])
         elif token_type == "access":
-            token = AccessToken(response[token_key], response["expires"], response["expires_in"])
+            token = AccessToken(response[token_key], response["token_type"], response["expires"], response["expires_in"])
         else:
             raise FieldTypeError("No such token: " + token_type)
 

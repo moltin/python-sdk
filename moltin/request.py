@@ -36,12 +36,15 @@ class Request:
         self.set_auth_header(token)
 
     def set_auth_header(self, token):
-        self.headers["Authorization"] = "Bearer " + token.token
+        self.headers["Authorization"] = token.type + " " + token.token
 
     def get(self, url, params=None):
         if params is None:
             params = {}
-        return with_error_handling(requests.get, self.make_url(url), headers=self.headers, params=params)
+        return with_error_handling(requests.get,
+                                   self.make_url(url),
+                                   headers=self.headers,
+                                   data=params)
 
     def post(self, trailing_uri, payload, auth=False):
         if auth:
@@ -51,16 +54,21 @@ class Request:
             headers = self.headers
             request_url = self.make_url(trailing_uri)
 
-        return with_error_handling(requests.post, request_url, data=payload, headers=headers)
+        return with_error_handling(requests.post,
+                                   request_url,
+                                   data=payload,
+                                   headers=headers)
 
     def auth(self, auth_uri, payload):
         return self.post(auth_uri, payload, auth=True)
 
     def put(self, url, payload):
-        pass
+        request_url = self.make_url(url)
+        return with_error_handling(requests.put, request_url, headers=self.headers, data=payload)
 
     def delete(self, url):
-        pass
+        request_url = self.make_url(url)
+        return with_error_handling(requests.delete, request_url, headers=self.headers)
 
     def make_auth_url(self, trailing_uri):
         return self.base + trailing_uri

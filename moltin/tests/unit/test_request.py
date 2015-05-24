@@ -13,6 +13,7 @@ r = Request("v1")
 def set_access_token(token, expires):
     params = {
         "access_token": token,
+        "token_type": "Bearer",
         "expires": expires,
         "expires_in": 3600
     }
