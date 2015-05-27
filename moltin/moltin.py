@@ -33,6 +33,34 @@ def create_endpoint_object(name):
 
 
 class Moltin:
+    """
+    This class provides an easy way to authenticate, make HTTP requests and do CRUD operations.
+
+    Usage:
+    m = Moltin(your_client_id, your_client_secret[, version="v1"])
+
+    To Authenticate:
+    m.authenticate()
+    Or with user/pass
+    m.authenticate(username="user", password="pass")
+
+    Once authenticated, the access token is automatically passed to every request
+    made through Moltin.
+    E.g.
+    product = m.get('products/5')
+    new_product = m.post('products', params)
+
+    There's an easier way to interact with most endpoints:
+    product = m.Product         # Creates a product wrapper
+    product.list()              # lists all products
+    product.create(params)      # creates a product, parameters passed as a dict
+    product.find(5)             # finds product by id = 5
+    product.find_by(params)     # finds a single product by params passed as a dict, e.g. {"title": "Banana"}
+    product.update(5, params)   # updates product with id = 5 with new params
+    product.remove(5)           # removes product with id = 5
+
+    The same wrapper is available with the full list of endpoints given below:
+    """
 
     endpoints = {
         "Address": "addresses",
@@ -76,6 +104,7 @@ class Moltin:
         token = self.authenticator.authenticate(username, password)
         # We set the access token for future requests
         self.request.set_access_token(token)
+        return token
 
     #
     #  Easy way of interacting with arbitrary API endpoints

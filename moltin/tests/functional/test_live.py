@@ -5,6 +5,7 @@ import os
 from moltin.moltin import Moltin
 from sure import expect
 
+
 def read_json_file(path):
     base = os.path.dirname(os.path.realpath(__file__)) + "/"
     real_path = base + path
