@@ -26,7 +26,6 @@ def mock_response(hash_to_return=None, result=None):
     hash_to_return = hash_to_return or hashes['default']
     if result:
         hash_to_return["result"] = result
-    print hash_to_return
     response = mock.Mock(moltin.requests.Response)
     response.json.return_value = hash_to_return
 

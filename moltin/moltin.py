@@ -28,28 +28,32 @@ import types
 # from Moltin.refresh_token
 
 
+def create_endpoint_object(name):
+    return type(name, (BaseEndpoint, object), {})
+
+
 class Moltin:
 
-    endpoints = [
-        "Address",
-        "Brand",
-        "Cart",
-        "Category",
-        "Checkout",
-        "Collection",
-        "Currency",
-        "Customer",
-        "CustomerGroup",
-        "Email",
-        "Entry",
-        "Field",
-        "File",
-        "Flow",
-        "Gateway",
-        "Language",
-        "Modifier",
-        "Moltin"
-    ]
+    endpoints = {
+        "Address": "addresses",
+        "Brand": "brands",
+        "Cart": "cart",
+        "Category": "categories",
+        "Checkout": "checkout",
+        "Collection": "collections",
+        "Currency": "currencies",
+        "Customer": "customers",
+        "CustomerGroup": "customer_groups",
+        "Email": "emails",
+        "Entry": "entries",
+        "Field": "fields",
+        "File": "files",
+        "Flow": "flow",
+        "Gateway": "gateways",
+        "Language": "languages",
+        "Modifier": "modifiers",
+        "Product": "products",
+    }
 
     # Initialise with your client id and secret.
     def __init__(self, client_id, client_secret, version="v1"):
@@ -59,10 +63,11 @@ class Moltin:
     def __getattr__(self, name):
         obj_name = name.capitalize()
         if obj_name in self.endpoints:
-            endpoint_obj = self.create_endpoint_object(obj_name)
-            return endpoint_obj(self.request, name)
+            endpoint_name = self.endpoints[obj_name]
+            endpoint_obj = create_endpoint_object(obj_name)
+            return endpoint_obj(self.request, endpoint_name)
         else:
-            raise RuntimeError("No such API endpoint: " + name)
+            raise RuntimeError("No such API object: " + name)
 
     def set_api_version(self, version):
         self.request.set_version(version)
@@ -87,6 +92,3 @@ class Moltin:
 
     def delete(self, uri):
         return self.request.delete(uri)
-
-    def create_endpoint_object(self, name):
-        return type(name, (BaseEndpoint,object), {})

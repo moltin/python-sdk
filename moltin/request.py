@@ -9,6 +9,8 @@ def with_error_handling(callback, *args, **kwargs):
 
     if 'error' in r:
         raise RequestError(r['error'])
+    elif 'errors' in r:
+        raise RequestError(", ".join(r['errors']))
     elif 'result' in r:
         result = r['result']
     elif 'message' in r:
@@ -26,7 +28,7 @@ class Request:
         self.version = None
         self.access_token = None
         self.headers = {}
-        self.set_version(version)  # api version with trailing slash for URI composition
+        self.set_version(version)
 
     def set_version(self, version):
         self.version = sanitize_url_fragment(version) + "/"
@@ -38,13 +40,13 @@ class Request:
     def set_auth_header(self, token):
         self.headers["Authorization"] = token.type + " " + token.token
 
-    def get(self, url, params=None):
-        if params is None:
-            params = {}
+    def get(self, url, payload=None):
+        if payload is None:
+            payload = {}
         return with_error_handling(requests.get,
                                    self.make_url(url),
                                    headers=self.headers,
-                                   data=params)
+                                   data=payload)
 
     def post(self, trailing_uri, payload, auth=False):
         if auth:
