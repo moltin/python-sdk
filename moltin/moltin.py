@@ -69,24 +69,16 @@ class Moltin:
     """
 
     endpoints = {
-        "Address": "addresses",
         "Brand": "brands",
-        "Cart": "cart",
         "Category": "categories",
-        "Checkout": "checkout",
         "Collection": "collections",
         "Currency": "currencies",
         "Customer": "customers",
-        "CustomerGroup": "customer_groups",
         "Email": "emails",
-        "Entry": "entries",
-        "Field": "fields",
-        "File": "files",
-        "Flow": "flow",
-        "Gateway": "gateways",
-        "Language": "languages",
-        "Modifier": "modifiers",
         "Product": "products",
+        "Order": "orders",
+        "Shipping": "shipping",
+        "Webhooks": "webhooks"
     }
 
     # Initialise with your client id and secret.

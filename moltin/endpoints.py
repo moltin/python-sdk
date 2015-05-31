@@ -30,4 +30,5 @@ class BaseEndpoint():
         return self.request.post(self.endpoint, payload=params)
 
     def _url_with(self, param):
+        print self.endpoint
         return self.endpoint + "/" + str(param)

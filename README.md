@@ -51,13 +51,13 @@ Authenticating with a username/password:
 Authenticating with a refresh_token string:
 
 ```python
-    access_token = m.authenticate(refresh_token="token")
+    access_token = m.authenticate(refresh_token="refresh_token_string")
 ```
 
 Once authenticated, the access token is automatically passed to every request.
 If you need to pass in a previously stored token, use:
 ```python
-m.set_access_token(access_token_string)
+m.set_access_token("access_token_string")
 ```
 before making a request
 

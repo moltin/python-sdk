@@ -50,6 +50,6 @@ class Authenticator:
 
     def with_refresh(self):
         self.payload["grant_type"] = "refresh_token"
-        self.payload["refresh_token"] = self.tokens.get("refresh")
+        self.payload["refresh_token"] = self.tokens.get("refresh").token
 
         return self.make_request()

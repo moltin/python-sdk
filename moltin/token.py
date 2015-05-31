@@ -55,7 +55,7 @@ class TokenFactory:
             {
                 token_key: string,
                 "token_type": "Bearer",
-                "expires": time(),
+                "expires": time.time(),
                 "expires_in": 3600
             })
 
