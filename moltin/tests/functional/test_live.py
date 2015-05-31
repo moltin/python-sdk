@@ -32,11 +32,19 @@ credentials = read_json_file(CREDENTIALS_PATH)
 
 
 m = Moltin(credentials["client_id"], credentials["client_secret"])
-m.authenticate()
 product = m.Product
 
 
+def test_authenticate():
+    token = m.authenticate()
+    expect(len(token.token) > 0).to.eql(True)
+
+
+def test_authenticate_with_user():
+    token, refresh = m.authenticate(credentials["username"], credentials["password"])
+    expect(len(refresh.token) > 0).to.eql(True)
+    expect(len(token.token) > 0).to.eql(True)
+
+
 def test_create():
-    print product.find(5)
-    print product.find_by({"title": "Hello"})
-    print product.update(5, {"title": "Hello"})
+    pass

@@ -1,12 +1,11 @@
 from authenticator import Authenticator
 from request import Request
-from token import TokenContainer
+from token import TokenContainer, TokenFactory
 from endpoints import BaseEndpoint
-import types
 
 # The Moltin Python SDK
 #
-# This class should be your entrance point to the Moltin Python SDK
+# This class should be your entry point to the Moltin Python SDK
 #
 # Initialisation
 #
@@ -39,10 +38,12 @@ class Moltin:
     Usage:
     m = Moltin(your_client_id, your_client_secret[, version="v1"])
 
-    To Authenticate:
-    m.authenticate()
-    Or with user/pass
-    m.authenticate(username="user", password="pass")
+    To Authenticate with id and secret:
+    token = m.authenticate()
+    Or with user/pass:
+    token, refresh_token = m.authenticate(username="user", password="pass")
+    Or with refresh token
+    token = m.authenticate(refresh_token=your_refresh_token)
 
     Once authenticated, the access token is automatically passed to every request
     made through Moltin.
@@ -50,12 +51,17 @@ class Moltin:
     product = m.get('products/5')
     new_product = m.post('products', params)
 
+    If you need to pass in a previously stored token, use:
+    m.set_access_token(your_access_token)
+    before making a request
+
     There's an easier way to interact with most endpoints:
     product = m.Product         # Creates a product wrapper
     product.list()              # lists all products
-    product.create(params)      # creates a product, parameters passed as a dict
-    product.find(5)             # finds product by id = 5
-    product.find_by(params)     # finds a single product by params passed as a dict, e.g. {"title": "Banana"}
+    product.create(params)      # creates a product, params passed as a dict
+    product.find(5)             # finds product with id = 5
+    product.find_by(params)     # finds a single product by params passed as a dict,
+                                # e.g. {"title": "Banana"}
     product.update(5, params)   # updates product with id = 5 with new params
     product.remove(5)           # removes product with id = 5
 
@@ -100,11 +106,25 @@ class Moltin:
     def set_api_version(self, version):
         self.request.set_version(version)
 
-    def authenticate(self, username=None, password=None):
-        token = self.authenticator.authenticate(username, password)
+    def set_access_token(self, token_string):
+        self.request.set_access_token(TokenFactory.from_string("access", token_string))
+
+    def authenticate(self, username=None, password=None, refresh_token=None):
+        refresh = None
+        if username and password:
+            token, refresh = self.authenticator.authenticate_with_user(username, password)
+        elif refresh_token:
+            token = self.authenticator.authenticate_with_refresh(refresh_token)
+        else:
+            token = self.authenticator.authenticate()
+
         # We set the access token for future requests
         self.request.set_access_token(token)
-        return token
+
+        if refresh is not None:
+            return token, refresh
+        else:
+            return token
 
     #
     #  Easy way of interacting with arbitrary API endpoints

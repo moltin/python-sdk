@@ -1,5 +1,5 @@
 from moltin.request import Request
-from moltin.token import TokenMaker
+from moltin.token import TokenFactory
 from moltin.exception import *
 import sure
 import mock
@@ -18,7 +18,7 @@ def set_access_token(token, expires):
         "expires_in": 3600
     }
 
-    r.set_access_token(TokenMaker.from_response("access", params))
+    r.set_access_token(TokenFactory.from_response("access", params))
 
 
 def test_access_token_set():
