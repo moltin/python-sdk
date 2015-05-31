@@ -8,10 +8,6 @@ m = Moltin("some_id", "some_secret")
 endpoint = m.Product
 
 
-def get_endpoint_response():
-    return
-
-
 def test_nonexistant_endpoint():
     m.__getattr__.when.called_with("NonexistantEndpoint").should.throw(RuntimeError)
 
