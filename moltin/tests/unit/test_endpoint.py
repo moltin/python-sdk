@@ -25,6 +25,7 @@ def test_find(mock_get):
     mock_get.return_value = mock_response(result={"id": 5})
     expect(endpoint.find(5)["id"]).to.eql(5)
 
+
 @mock.patch('moltin.requests.get')
 def test_find_by(mock_get):
     mock_get.return_value = mock_response(result={"id": 5, "slug": "someslug"})
@@ -45,9 +46,17 @@ def test_create(mock_post):
     mock_post.return_value = mock_response(result=result)
     expect(endpoint.create(params)["id"]).to.eql(5)
 
+
 @mock.patch('moltin.requests.put')
 def test_update(mock_put):
     params = {"title": "New product Title", "quantity": 4}
     result = {"message": "Updated successfully"}
     mock_put.return_value = mock_response(result=result)
     expect(endpoint.update(5, params)["message"]).to.eql("Updated successfully")
+
+
+@mock.patch('moltin.requests.delete')
+def test_update(mock_delete):
+    result = {"message": "Deleted successfully"}
+    mock_delete.return_value = mock_response(result=result)
+    expect(endpoint.remove(5)["message"]).to.eql("Deleted successfully")
