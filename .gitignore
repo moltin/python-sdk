@@ -3,3 +3,4 @@ env3
 .idea
 moltin/tests/functional/credentials.json
 *.pyc
+dist
