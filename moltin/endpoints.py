@@ -1,5 +1,5 @@
-from url import sanitize_url_fragment
-from exception import *
+from . url import sanitize_url_fragment
+from . exception import *
 
 
 class BaseEndpoint():
@@ -30,5 +30,4 @@ class BaseEndpoint():
         return self.request.post(self.endpoint, payload=params)
 
     def _url_with(self, param):
-        print self.endpoint
         return self.endpoint + "/" + str(param)

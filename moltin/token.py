@@ -1,5 +1,4 @@
 import time
-from exception import *
 
 
 class TokenContainer:

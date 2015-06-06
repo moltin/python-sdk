@@ -1,2 +1,3 @@
 sure==1.2.12
+nose
 requests==2.7.0

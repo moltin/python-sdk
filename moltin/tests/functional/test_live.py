@@ -50,7 +50,7 @@ try:
         expect(len(token.token) > 0).to.eql(True)
 
     def test_endpoints():
-        for endpoint, val in m.endpoints.iteritems():
+        for endpoint, val in m.endpoints.items():
             endpoint = getattr(m, endpoint)
             endpoint.list()
 except IOError:

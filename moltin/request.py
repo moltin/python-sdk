@@ -1,6 +1,6 @@
 import requests
-from url import sanitize_url_fragment
-from exception import *
+from . url import sanitize_url_fragment
+from . exception import *
 
 
 def with_error_handling(callback, *args, **kwargs):

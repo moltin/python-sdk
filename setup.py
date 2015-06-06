@@ -9,7 +9,7 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='moltin',
-    version='1.0.0b1',
+    version='0.9.0b1',
     description='Moltin Python SDK',
     long_description=long_description,
     url='https://github.com/moltin/python-sdk',
@@ -17,7 +17,6 @@ setup(
     author_email='support@moltin.com',
     license='MIT',
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-    use_2to3=True,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -32,7 +31,7 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     keywords='ecommerce api sdk',
-    install_requires=['requests>=2.7.0<3.0'],
+    install_requires=['requests>=2.7.0,<3.0'],
     extras_require={
         'test': ['sure', 'nose'],
     },
