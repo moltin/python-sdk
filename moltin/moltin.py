@@ -3,29 +3,6 @@ from request import Request
 from token import TokenContainer, TokenFactory
 from endpoints import BaseEndpoint
 
-# The Moltin Python SDK
-#
-# This class should be your entry point to the Moltin Python SDK
-#
-# Initialisation
-#
-# Initialise Moltin with your client_id and client_secret
-# If you require a specific API version, pass it in as the version kwarg
-#
-# Authentication
-#
-# Once initialised, call authenticate()
-# The authenticate() method always returns your access_token, but the token is also
-# automatically used for all future requests on the Moltin object
-#
-# By default, authentication will be done using the client_id and secret
-# To change authentication type:
-# For user/pass authentication, pass in username & password as kwargs
-# For refresh token authentication, pass the refresh_token in as the refresh_token kwarg
-#
-# Once you authenticate using user/pass, the refresh token is available
-# from Moltin.refresh_token
-
 
 def create_endpoint_object(name):
     return type(name, (BaseEndpoint, object), {})
