@@ -1,7 +1,7 @@
-from authenticator import Authenticator
-from request import Request
-from token import TokenContainer, TokenFactory
-from endpoints import BaseEndpoint
+from . authenticator import Authenticator
+from . request import Request
+from . token import TokenContainer, TokenFactory
+from . endpoints import BaseEndpoint
 
 
 def create_endpoint_object(name):

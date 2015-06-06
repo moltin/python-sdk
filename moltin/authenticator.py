@@ -1,5 +1,4 @@
-from token import TokenFactory
-from exception import *
+from . token import TokenFactory
 
 
 class Authenticator:

@@ -3,7 +3,7 @@ from moltin.token import TokenFactory
 from moltin.exception import *
 import sure
 import mock
-from mock_response import mock_auth_response
+from . mock_response import mock_auth_response
 from sure import expect
 from time import time
 

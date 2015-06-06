@@ -1,5 +1,4 @@
-import time
-from mock_response import mock_auth_response
+from . mock_response import mock_auth_response
 from moltin.token import *
 from sure import expect
 

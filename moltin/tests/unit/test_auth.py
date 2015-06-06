@@ -1,10 +1,9 @@
-import moltin
 from moltin.moltin import Moltin
 from moltin.exception import *
 from moltin.request import Request
 from moltin.token import *
 from moltin.authenticator import Authenticator
-from mock_response import mock_auth_response
+from . mock_response import mock_auth_response
 from sure import expect
 
 import mock

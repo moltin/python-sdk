@@ -1,7 +1,7 @@
 from moltin.moltin import *
 from sure import expect
 import mock
-from mock_response import mock_response
+from . mock_response import mock_response
 import sure
 
 m = Moltin("some_id", "some_secret")
