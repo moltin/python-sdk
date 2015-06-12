@@ -13,7 +13,8 @@ def test_nonexistant_endpoint():
 
 
 def test_specific_endpoint():
-    expect(isinstance(endpoint, BaseEndpoint)).to.eql(True)
+    for e in [m.Product, m.Cart]:
+        expect(isinstance(e, Endpoint)).to.eql(True)
 
 
 @mock.patch('moltin.requests.get')

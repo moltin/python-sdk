@@ -1,11 +1,11 @@
 from . authenticator import Authenticator
 from . request import Request
 from . token import TokenContainer, TokenFactory
-from . endpoints import BaseEndpoint
+from . endpoints import Endpoint, Cart
 
 
 def create_endpoint_object(name):
-    return type(name, (BaseEndpoint, object), {})
+    return type(name, (Endpoint, object), {})
 
 
 class Moltin:
@@ -56,6 +56,10 @@ class Moltin:
         "Order": "orders",
         "Shipping": "shipping",
         "Webhooks": "webhooks"
+    }
+
+    custom_endpoints = {
+        "Cart": Cart
     }
 
     # Initialise with your client id and secret.
