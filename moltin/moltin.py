@@ -1,11 +1,11 @@
-from . authenticator import Authenticator
-from . request import Request
-from . token import TokenContainer, TokenFactory
-from . endpoints import Endpoint, Cart
+from .authenticator import Authenticator
+from .request import Request
+from .token import TokenContainer, TokenFactory
+from .endpoints import Endpoint, CartEndpoint
+from .curry import curry
 
-
-def create_endpoint_object(name):
-    return type(name, (Endpoint, object), {})
+def create_endpoint_object(name, inherits_from):
+    return type(name, (inherits_from, object), {})
 
 
 class Moltin:
@@ -59,7 +59,7 @@ class Moltin:
     }
 
     custom_endpoints = {
-        "Cart": Cart
+        "Cart": (CartEndpoint, "carts")
     }
 
     # Initialise with your client id and secret.
@@ -69,12 +69,17 @@ class Moltin:
 
     def __getattr__(self, name):
         obj_name = name.capitalize()
+
         if obj_name in self.endpoints:
-            endpoint_name = self.endpoints[obj_name]
-            endpoint_obj = create_endpoint_object(obj_name)
-            return endpoint_obj(self.request, endpoint_name)
+            e = create_endpoint_object(obj_name, Endpoint)
+            endpoint = e(self.request, self.endpoints[obj_name])
+        elif obj_name in self.custom_endpoints:
+            obj_base, endpoint_name = self.custom_endpoints[obj_name]
+            endpoint = curry(obj_base, self.request, endpoint_name)
         else:
             raise RuntimeError("No such API object: " + name)
+
+        return endpoint
 
     def set_api_version(self, version):
         self.request.set_version(version)

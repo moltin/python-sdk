@@ -8,8 +8,11 @@ class BaseEndpoint(object):
         self.request = request
         self.endpoint = sanitize_url_fragment(endpoint)
 
-    def _url_with(self, param):
-        return self.endpoint + "/" + str(param)
+    def _url_with(self, *params):
+        def add_to_endpoint(endpoint, param):
+            return endpoint + "/" + str(param)
+
+        return reduce(add_to_endpoint, params, self.endpoint)
 
 
 class Endpoint(BaseEndpoint):
@@ -37,19 +40,37 @@ class Endpoint(BaseEndpoint):
 
 class CartEndpoint(BaseEndpoint):
 
-    def addItem(self):
+    def __init__(self, request, endpoint, cart_id):
+        super(CartEndpoint, self).__init__(request, endpoint)
+        self.id = cart_id
+
+    def add_item(self, params):
+        self.request.post(self._url_with(self.id), params)
+
+    def add_variation(self, params):
+        self.add_item(params)
+
+    def update_item(self):
         pass
 
-    def addVariation(self):
-        pass
-
-    def updateItem(self):
+    def contents(self):
         pass
 
     def list(self):
         pass
 
-    def hasItem(self):
+    def has_item(self):
         pass
 
-class Cart:
+    def get_item(self, item_id):
+        pass
+
+    def delete_item(self, item_id):
+        pass
+
+    def checkout_options(self):
+        pass
+
+    def checkout(self):
+        pass
+
