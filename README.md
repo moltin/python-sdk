@@ -1,3 +1,5 @@
+[ ![Codeship Status for moltin/python-sdk](https://codeship.com/projects/5f7ffb40-ee87-0132-5a7e-1ab35c066e9d/status?branch=master)](https://codeship.com/projects/84236)
+
 # Python SDK
 
 [Website] (http://molt.in)

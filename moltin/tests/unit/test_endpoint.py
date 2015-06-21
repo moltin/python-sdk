@@ -1,7 +1,8 @@
-from moltin.moltin import *
+from moltin.moltin import Moltin
+from moltin.endpoints import BaseEndpoint
 from sure import expect
 import mock
-from . mock_response import mock_response
+from .mock_response import mock_response
 import sure
 
 m = Moltin("some_id", "some_secret")
@@ -12,8 +13,18 @@ def test_nonexistant_endpoint():
     m.__getattr__.when.called_with("NonexistantEndpoint").should.throw(RuntimeError)
 
 
-def test_specific_endpoint():
-    expect(isinstance(endpoint, BaseEndpoint)).to.eql(True)
+def test_specific_endpoints():
+    for e in [m.Product, m.Cart(5)]:
+        expect(isinstance(e, BaseEndpoint)).to.eql(True)
+
+
+@mock.patch("moltin.requests.post")
+def test_special_endpoint(mock_post):
+    mock_post.return_value = mock_response({"status": "success"})
+    cart = m.Cart(5)
+    params = {"title": "Item Title"}
+    cart.add_item(params)
+    mock_post.assert_called_with('https://api.molt.in/v1/carts/5', headers={}, data=params)
 
 
 @mock.patch('moltin.requests.get')
@@ -56,3 +67,8 @@ def test_update(mock_delete):
     result = {"message": "Deleted successfully"}
     mock_delete.return_value = mock_response(result=result)
     expect(endpoint.remove(5)["message"]).to.eql("Deleted successfully")
+
+@mock.patch('moltin.requests')
+def test_url_with(mock_request):
+    endpoint = BaseEndpoint(mock_request, "cart")
+    expect(endpoint._url_with(5)).to.eql("cart/5")

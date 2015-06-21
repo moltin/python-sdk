@@ -1,1 +1,1 @@
-from moltin import moltin
+import moltin
