@@ -43,34 +43,38 @@ class CartEndpoint(BaseEndpoint):
     def __init__(self, request, endpoint, cart_id):
         super(CartEndpoint, self).__init__(request, endpoint)
         self.id = cart_id
+        self.endpoint = self._url_with(cart_id)
 
     def add_item(self, params):
-        self.request.post(self._url_with(self.id), params)
+        return self.request.post(self.endpoint, params)
 
     def add_variation(self, params):
-        self.add_item(params)
+        return self.add_item(params)
 
-    def update_item(self):
-        pass
+    def update_item(self, item_id, params):
+        return self.request.put(
+            self._url_with(self.id, "items", item_id),
+            params
+        )
 
     def contents(self):
-        pass
+        return self.request.get(self.endpoint)
 
-    def list(self):
-        pass
-
-    def has_item(self):
-        pass
+    def has_item(self, item_id):
+        return bool(self.request.get(self._url_with("has", item_id))["status"])
 
     def get_item(self, item_id):
-        pass
+        return self.request.get(self._url_with("item", item_id))
 
     def delete_item(self, item_id):
-        pass
+        return self.request.delete(self._url_with("item", item_id))
 
     def checkout_options(self):
-        pass
+        return self.request.get(self._url_with("checkout"))
 
     def checkout(self):
-        pass
+        return self.request.post(self._url_with("checkout"))
+
+    def delete(self):
+        return self.request.delete(self.endpoint)
 

@@ -18,9 +18,13 @@ def test_specific_endpoints():
         expect(isinstance(e, BaseEndpoint)).to.eql(True)
 
 
-def test_special_endpoint():
+@mock.patch("moltin.requests.post")
+def test_special_endpoint(mock_post):
+    mock_post.return_value = mock_response({"status": "success"})
     cart = m.Cart(5)
-    cart.add_item({"title": "Item Title"})
+    params = {"title": "Item Title"}
+    cart.add_item(params)
+    mock_post.assert_called_with('https://api.molt.in/v1/carts/5', headers={}, data=params)
 
 
 @mock.patch('moltin.requests.get')
