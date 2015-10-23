@@ -55,12 +55,15 @@ class Moltin:
         "Product": "products",
         "Order": "orders",
         "Shipping": "shipping",
-        "Webhooks": "webhooks"
+        "Webhooks": "webhooks",
     }
 
     custom_endpoints = {
         "Cart": (CartEndpoint, "carts"),
-        "Checkout": (CheckoutEndpoint, "checkout")
+    }
+
+    custom_endpoints_without_extra_params = {
+        "Checkout": (CheckoutEndpoint, "checkout"),
     }
 
     # Initialise with your client id and secret.
@@ -77,6 +80,10 @@ class Moltin:
         elif obj_name in self.custom_endpoints:
             obj_base, endpoint_name = self.custom_endpoints[obj_name]
             endpoint = curry(obj_base, self.request, endpoint_name)
+        elif obj_name in self.custom_endpoints_without_extra_params:
+            obj_base, endpoint_name = self.custom_endpoints_without_extra_params[obj_name]
+            e = create_endpoint_object(obj_name, obj_base)
+            endpoint = e(self.request, endpoint_name)
         else:
             raise RuntimeError("No such API object: " + name)
 

@@ -9,7 +9,7 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='moltin',
-    version='1.0.0b1',
+    version='1.0.1b1',
     description='Moltin Python SDK',
     long_description=long_description,
     url='https://github.com/moltin/python-sdk',

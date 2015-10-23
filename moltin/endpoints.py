@@ -84,5 +84,8 @@ class CartEndpoint(BaseEndpoint):
 
 class CheckoutEndpoint(BaseEndpoint):
 
+    def __init__(self, request, endpoint):
+        super(CheckoutEndpoint, self).__init__(request, endpoint)
+
     def payment(self, method, order_id, params):
         return self.request.post(self._url_with("payment", method, order_id), params)
