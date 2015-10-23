@@ -1,2 +1,2 @@
-sure==1.2.12
+sure
 requests==2.7.0

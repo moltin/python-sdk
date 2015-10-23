@@ -1,7 +1,7 @@
 from .authenticator import Authenticator
 from .request import Request
 from .token import TokenContainer, TokenFactory
-from .endpoints import Endpoint, CartEndpoint
+from .endpoints import Endpoint, CartEndpoint, CheckoutEndpoint
 from .curry import curry
 
 def create_endpoint_object(name, inherits_from):
@@ -59,7 +59,8 @@ class Moltin:
     }
 
     custom_endpoints = {
-        "Cart": (CartEndpoint, "carts")
+        "Cart": (CartEndpoint, "carts"),
+        "Checkout": (CheckoutEndpoint, "checkout")
     }
 
     # Initialise with your client id and secret.

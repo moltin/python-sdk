@@ -1,0 +1,155 @@
+<div class="col-md-10 col-md-push-1 col-sm-12">
+
+    <div class="gs-card">
+        <div class="background-image-holder">
+            {{ theme:image file="bg6.svg" class="background-image" alt="Background Image" }}
+        </div>
+        <h2 id="install-python" class="h1 text-white text-center">Install the Python SDK</h2>
+        <ol>
+            <li id="install-sdk">
+                <h2 class="text-white">Install the SDK</h2>
+              <pre><code data-language="bash">$ pip install moltin</code></pre>
+                <p>Or add it to your <span class="code">requirements.txt</span>:</p>
+              <pre><code>moltin>=1.0</code></pre>
+                <p>Then run <span class="code">pip install -r requirements.txt</span></p>
+            </li>
+            <li id="initialise">
+                <h2 class="text-white">Initialize Moltin</h2>
+                <p>Initialise the Moltin object with your <span class="code">client_id</span> and <span class="code">client_secret</span>.
+
+                <pre>
+                    <code data-language="python">
+                        from moltin.moltin import Moltin
+
+                        m = Moltin("{{ client_id }}", "{{ client_secret }}")
+                    </code>
+                </pre>
+                <?php if(isset($this->current_user->id)): ?>
+                    <p>We've included your store <span class="code">API keys</span> in the authentication method above so
+                        that you can now start making calls immediately.</p>
+                <?php endif; ?>
+            </li>
+            <li id="authenticate">
+                <h2 class="text-white">Authenticate</h2>
+                <p>Authenticate by calling the authenticate method.</p>
+                <pre>
+                    <code data-language="python">
+                        access_token = m.authenticate()
+                        # This returns an AccessToken object
+                        # access_token.token: the token string
+                        # access_token.has_expired(): has the token expired
+                        #
+                        # The access token is automatically passed to subsequent requests,
+                        # so you shouldn't normally need to use the returned token
+                        # except when persisting in a session or db
+                    </code>
+                </pre>
+            </li>
+        </ol>
+    </div>
+
+    {{ theme:partial name="help" }}
+
+    <div class="gs-card">
+        <div class="background-image-holder">
+            {{ theme:image file="bg6.svg" class="background-image" alt="Background Image" }}
+        </div>
+        <h2 class="h1 text-white text-center">A simple checkout flow</h2>
+        <ol>
+            <li id="get-product">
+                <h2 class="text-white">Get a product</h2>
+
+                <p>Now that we've authenticated with the Moltin API lets get one of our sample products. <span
+                        class="code">Please note</span> you will need to create a product first via the <a
+                        class="text-white" target="blank"
+                        href="http://docs.moltin.com/api/1.0/product#post-product">API</a> or <a class="text-white"
+                                                                                                 href="https://forge.moltin.com"
+                                                                                                 target="_blank">Forge
+                    dashboard</a>.</p>
+                <pre><code data-language="python">
+                    product = m.Product.find_by({'slug': 'decorative-hedgehogs'})
+                </code></pre>
+                <p><span class="code">product</span> should contain an array of the products data. A good place to
+                    display this data is on a product or listing page.</p>
+            </li>
+            <li id="add-to-cart">
+                <h2 class="text-white">Add product to cart</h2>
+                <p>Using a product ID we can insert a quantity of this product into the cart with one simple request.
+                    This method takes a dictionary of the product ID (<span class="code">'id'</span>) and quantity of the item</p>
+                <pre><code data-language="python">
+                    cart = m.Cart()  # create a new cart
+                    cart.add_item({
+                        'id': product_id
+                        'quantity': 1,
+                    })
+                </code></pre>
+
+            </li>
+            <li id="get-cart">
+                <h2 class="text-white">Get cart contents</h2>
+                <p>Now that we have at least one item in the cart, let's get its contents.</p>
+                <pre><code data-language="python">
+                    items = cart.contents()
+                </code></pre>
+
+                <p><span class="code">items</span> should contain an array of all cart items and cart totals.
+                    A good place to show this data would be on the cart or orders page, or even a widget in the header of your website.</p>
+            </li>
+            <li id="cart-to-order">
+                <h2 class="text-white">Convert cart to order</h2>
+
+                <p>When the customer is ready to checkout we need to convert the cart to an order. This call lets you
+                    define the payment gateway and conditional order parameters such as customer, billing and shipping
+                    addresses.</p>
+                  <pre><code data-language="python">order = cart.checkout({
+                      'gateway': 'dummy',
+                      'customer': {
+                        'first_name': 'Jon',
+                        'last_name': 'Doe',
+                        'email': 'jon.doe@gmail.com'
+                      },
+                      'bill_to': {
+                          'first_name': 'Jon',
+                          'last_name': 'Doe',
+                          'address_1': '123 Sunny Street',
+                          'address_2': 'Sunnycreek',
+                          'city': 'Sunnyvale',
+                          'county': 'California',
+                          'country': 'US',
+                          'postcode': 'CA94040',
+                          'phone': '6507123124'
+                      },
+                      'ship_to': 'bill_to',
+                      'shipping': 'free_shipping'
+                  });</code></pre>
+                <p>This call will return an object containing data for the new order created.</p>
+            </li>
+            <li id="process-payment">
+                <h2 class="text-white">Process payment</h2>
+
+                <p>Once we've converted a cart into an order we're now ready to process a payment. In this example we've
+                    used the <span class="code">dummy</span> gateway so we just need to provide some card details. The
+                    data you need to provide in this step depends on your chosen gateway.</p>
+                  <pre><code data-language="python">checkout = m.Checkout.payment('purchase', order['result']['id'], {
+                      'data': {
+                        'number': '4242424242424242',
+                        'expiry_month': '02',
+                        'expiry_year': '2017',
+                        'cvv': '123'
+                      }
+                  });</code></pre>
+                <p>Congratulations, you've just implemented a simple step by step checkout in Python!</p>
+            </li>
+        </ol>
+    </div>
+
+    <div class="gs-helper text-center">
+        <h2>Jump start your own project</h2>
+
+        <p>Grab our example project and see all of this working together in a simple application! Customise or use
+            as inpiration for your own projects.</p>
+        <a href="https://github.com/moltin/framework" target="_blank" class="btn btn-primary btn-filled"><i
+                class="icon icomoon-github2"></i> View on Github</a>
+    </div>
+
+</div>

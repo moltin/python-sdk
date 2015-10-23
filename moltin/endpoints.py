@@ -1,3 +1,5 @@
+import uuid
+
 from . url import sanitize_url_fragment
 from . exception import *
 
@@ -38,11 +40,12 @@ class Endpoint(BaseEndpoint):
     def create(self, params):
         return self.request.post(self.endpoint, payload=params)
 
+
 class CartEndpoint(BaseEndpoint):
 
-    def __init__(self, request, endpoint, cart_id):
+    def __init__(self, request, endpoint, cart_id=None):
         super(CartEndpoint, self).__init__(request, endpoint)
-        self.id = cart_id
+        self.id = cart_id or uuid.uuid4()
         self.endpoint = self._url_with(cart_id)
 
     def add_item(self, params):
@@ -72,9 +75,14 @@ class CartEndpoint(BaseEndpoint):
     def checkout_options(self):
         return self.request.get(self._url_with("checkout"))
 
-    def checkout(self):
-        return self.request.post(self._url_with("checkout"))
+    def checkout(self, params):
+        return self.request.post(self._url_with("checkout"), params)
 
     def delete(self):
         return self.request.delete(self.endpoint)
 
+
+class CheckoutEndpoint(BaseEndpoint):
+
+    def payment(self, method, order_id, params):
+        return self.request.post(self._url_with("payment", method, order_id), params)
