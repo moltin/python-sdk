@@ -4,3 +4,4 @@ env3
 moltin/tests/functional/credentials.json
 *.pyc
 dist
+moltin.egg-info/
