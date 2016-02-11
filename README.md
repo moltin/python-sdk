@@ -13,8 +13,17 @@ Version: 1.0
 Python SDK for the Moltin eCommerce API
 
 ## Installation
+To install from the Python package manager:
 
     $ pip install moltin
+
+Alternatively, you can install from source:
+
+    $ git clone https://github.com/moltin/python-sdk.git
+    $ cd python-sdk
+    $ python setup.py install
+    
+    
 
 ## Usage
 
