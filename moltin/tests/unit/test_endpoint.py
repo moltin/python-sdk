@@ -24,7 +24,7 @@ def test_special_endpoint(mock_post):
     cart = m.Cart(5)
     params = {"title": "Item Title"}
     cart.add_item(params)
-    mock_post.assert_called_with('https://api.molt.in/v1/carts/5', headers={}, data=params)
+    mock_post.assert_called_with('https://api.molt.in/v1/carts/5', headers={}, data=params, json=None)
 
 
 @mock.patch('moltin.requests.get')
