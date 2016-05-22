@@ -48,10 +48,16 @@ class Request:
                                    headers=self.headers,
                                    data=payload)
 
-    def post(self, trailing_uri, payload, auth=False):
+    def post(self, trailing_uri, payload, auth=False, checkout=False):
+        json_data = None
         if auth:
             headers = {}
             request_url = self.make_auth_url(trailing_uri)
+        elif checkout:
+            headers=self.headers
+            request_url = self.make_url(trailing_uri)
+            json_data = payload
+            payload = None
         else:
             headers = self.headers
             request_url = self.make_url(trailing_uri)
@@ -59,6 +65,7 @@ class Request:
         return with_error_handling(requests.post,
                                    request_url,
                                    data=payload,
+                                   json=json_data,
                                    headers=headers)
 
     def auth(self, auth_uri, payload):
