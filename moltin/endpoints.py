@@ -76,7 +76,7 @@ class CartEndpoint(BaseEndpoint):
         return self.request.get(self._url_with("checkout"))
 
     def checkout(self, params):
-        return self.request.post(self._url_with("checkout"), params)
+        return self.request.post(self._url_with("checkout"), params,checkout=True)
 
     def delete(self):
         return self.request.delete(self.endpoint)
@@ -88,4 +88,4 @@ class CheckoutEndpoint(BaseEndpoint):
         super(CheckoutEndpoint, self).__init__(request, endpoint)
 
     def payment(self, method, order_id, params):
-        return self.request.post(self._url_with("payment", method, order_id), params)
+        return self.request.post(self._url_with("payment", method, order_id), params, checkout=True)
