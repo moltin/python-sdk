@@ -10,7 +10,15 @@ def with_error_handling(callback, *args, **kwargs):
     if 'error' in r:
         raise RequestError(r['error'])
     elif 'errors' in r:
-        raise RequestError(", ".join(r['errors']))
+        errors = []
+
+        for error_name, error_list in r['errors'].iteritems():
+            error_detail = ", ".join(error_item for error_item in error_list)
+            errors.append('%s: %s' % (error_name, error_detail))
+
+        error = "\n" + "\n".join(error for error in errors)
+
+        raise RequestError(error)
     elif 'result' in r:
         result = r['result']
     elif 'message' in r:
